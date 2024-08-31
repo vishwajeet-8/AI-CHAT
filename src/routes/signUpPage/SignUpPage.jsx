@@ -4,8 +4,7 @@ import "./signUpPage.css";
 function SignUpPage() {
   return (
     <div className="signupPage">
-      SignUpPage
-      <SignUp path="/sign-up" />
+      <SignUp path="/sign-up" signInUrl="/sign-in" />
     </div>
   );
 }

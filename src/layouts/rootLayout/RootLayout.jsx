@@ -20,12 +20,9 @@ const RootLayout = () => {
         <header>
           <Link to="/" className="logo">
             <img src="/logo.png" alt="" />
-            <span>AI-CHAT</span>
+            <span>AI CHAT</span>
           </Link>
           <div className="user">
-            {/* <SignedOut>
-              <SignInButton />
-            </SignedOut> */}
             <SignedIn>
               <UserButton />
             </SignedIn>

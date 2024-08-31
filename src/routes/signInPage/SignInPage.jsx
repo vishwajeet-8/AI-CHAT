@@ -2,9 +2,15 @@ import { SignIn } from "@clerk/clerk-react";
 import "./signInPage.css";
 
 function SignInPage() {
-  return <div className="signinPage">SignInPage
-  <SignIn path="/sign-in" />
-  </div>;
+  return (
+    <div className="signinPage">
+      <SignIn
+        path="/sign-in"
+        signUpUrl="/sign-up"
+        forceRedirectUrl="/dashboard"
+      />
+    </div>
+  );
 }
 
 export default SignInPage;

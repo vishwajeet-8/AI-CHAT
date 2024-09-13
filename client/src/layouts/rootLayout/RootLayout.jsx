@@ -3,8 +3,6 @@ import "./rootLayout.css";
 import {
   ClerkProvider,
   SignedIn,
-  SignedOut,
-  SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
 

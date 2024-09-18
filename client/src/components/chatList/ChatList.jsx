@@ -6,7 +6,7 @@ const ChatList = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["userChats"],
     queryFn: () =>
-      fetch("http://localhost:8080/api/userchats", {
+      fetch(`${import.meta.env.VITE_API_URL}/api/userchats`, {
         credentials: "include",
       }).then((res) => res.json()),
   });

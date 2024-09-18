@@ -16,29 +16,16 @@ const NewPrompt = ({ data }) => {
     aiData: {},
   });
 
-  //   const chat = model.startChat({
-  //     history: [
-  //       data?.history.map(({ role, parts }) => ({
-  //         role,
-  //         parts: [{ text: parts[0].text }],
-  //       })),
-  //     ],
-  //     generationConfig: {
-  //       // maxOutputTokens: 100,
-  //     },
-  //   });
-
   const chat = model.startChat({
-    history: [
-      {
-        role: "user",
-        parts: [{ text: "Hello" }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Great to meet you. What would you like to know?" }],
-      },
-    ],
+    history:
+      data?.history?.map(({ role, parts }) => ({
+        role: role,
+        parts: [{ text: parts[0].text }],
+      })) || [],
+    generationConfig: {
+      // stopSequences: ["x"],
+      // maxOutputTokens: 100,
+    },
   });
 
   const endRef = useRef(null);
@@ -52,7 +39,7 @@ const NewPrompt = ({ data }) => {
 
   const mutation = useMutation({
     mutationFn: () => {
-      return fetch(`http://localhost:8080/api/chats/${data._id}`, {
+      return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -116,15 +103,16 @@ const NewPrompt = ({ data }) => {
   };
 
   // IN PRODUCTION WE DON'T NEED IT
-  // let hasRun = false;
+
+  const hasRun = useRef(false);
 
   useEffect(() => {
-    // if (!hasRun) {
-    if (data?.history?.length === 1) {
-      add(data.history[0].parts[0].text, true);
-      // }
+    if (!hasRun.current) {
+      if (data?.history?.length === 1) {
+        add(data.history[0].parts[0].text, true);
+      }
     }
-    // hasRun = true;
+    hasRun.current = true;
   }, []);
 
   return (

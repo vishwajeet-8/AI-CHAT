@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "clean-install": "npm cache clean --force && rm -rf node_modules package-lock.json && npm install",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -15,8 +14,8 @@
     "@google/generative-ai": "^0.17.1",
     "@tanstack/react-query": "^5.56.2",
     "imagekitio-react": "^4.2.0",
-    "react": "19.0.0-rc-8b08e99e-20240713",
-    "react-dom": "19.0.0-rc-8b08e99e-20240713",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.26.1",
     "react-type-animation": "^3.2.0"

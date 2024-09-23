@@ -24,7 +24,7 @@ const NewPrompt = ({ data }) => {
       })) || [],
     generationConfig: {
       // stopSequences: ["x"],
-      // maxOutputTokens: 100,
+      maxOutputTokens: 1000,
     },
   });
 
@@ -82,7 +82,6 @@ const NewPrompt = ({ data }) => {
       let accumulatedText = "";
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
-        console.log(chunkText);
         accumulatedText += chunkText;
         setAnswer(accumulatedText);
       }
@@ -92,6 +91,21 @@ const NewPrompt = ({ data }) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    function processWebDevDescription(answer) {
+      let points = answer.split("\n\n");
+
+      // Check if the last point is incomplete
+      if (!points[points.length - 1].trim().endsWith(".")) {
+        points.pop();
+      }
+
+      return setAnswer(points.join("\n\n"));
+    }
+
+    processWebDevDescription(answer);
+  }, [answer]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

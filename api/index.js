@@ -10,6 +10,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+const port = process.env.PORT || 8080;
 
 app.use(
   cors({
@@ -92,7 +93,7 @@ app.get("/api/userchats", ClerkExpressWithAuth(), async (req, res) => {
 
   try {
     const userChats = await UserChats.find({ userId });
-    res.status(200).send(userChats[0].chats);
+    res.status(200).send(userChats[0]?.chats);
   } catch (err) {
     console.log(err);
     res.status(500).send("Error fetching userchats!");
@@ -144,7 +145,7 @@ app.use((err, req, res, next) => {
   console.log(err.stack);
   res.status(500).send("Unauthenticated");
 });
-app.listen(8080, () => {
+app.listen(port, () => {
   connect();
-  console.log("App running on port 8080");
+  console.log(`App running on port ${port}`);
 });

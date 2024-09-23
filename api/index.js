@@ -6,25 +6,18 @@ import cors from "cors";
 import Chat from "./model/chat.js";
 import UserChats from "./model/userChats.js";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
-import { withAuth } from "@clerk/clerk-sdk-node";
+// import { withAuth } from "@clerk/clerk-sdk-node";
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
-
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
-// app.use(withAuth());
 app.use(express.json());
-
-app.use((req, res, next) => {
-  console.log("Headers:", req.headers);
-  next();
-});
 
 const connect = async () => {
   try {
@@ -96,23 +89,18 @@ app.post("/api/chats", ClerkExpressWithAuth(), async (req, res) => {
   }
 });
 
-app.get(
-  "/api/userchats",
-  ClerkExpressWithAuth(),
-  withAuth(async (req, res) => {
-    console.log(req.auth);
-    const { userId } = req.auth;
-    console.log(userId);
+app.get("/api/userchats", ClerkExpressWithAuth(), async (req, res) => {
+  console.log(req.auth);
+  const { userId } = req.auth;
 
-    try {
-      const userChats = await UserChats.find({ userId });
-      res.status(200).send(userChats[0]?.chats);
-    } catch (err) {
-      console.log(err);
-      res.status(500).send("Error fetching userchats!");
-    }
-  })
-);
+  try {
+    const userChats = await UserChats.find({ userId });
+    res.status(200).send(userChats[0]?.chats);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error fetching userchats!");
+  }
+});
 
 app.get("/api/chats/:id", ClerkExpressWithAuth(), async (req, res) => {
   const { userId } = req.auth;

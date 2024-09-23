@@ -21,6 +21,11 @@ app.use(
 // app.use(withAuth());
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log("Headers:", req.headers);
+  next();
+});
+
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);

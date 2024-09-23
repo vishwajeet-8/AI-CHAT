@@ -6,32 +6,20 @@ import cors from "cors";
 import Chat from "./model/chat.js";
 import UserChats from "./model/userChats.js";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
+import { withAuth } from "@clerk/clerk-sdk-node";
 dotenv.config();
 
 const app = express();
-app.use(express.json());
 const port = process.env.PORT || 8080;
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://ai-chat-frontend-l89t.onrender.com",
-];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
-          "The CORS policy for this site does not allow access from the specified Origin.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
+// app.use(withAuth());
+app.use(express.json());
 
 const connect = async () => {
   try {
@@ -103,17 +91,23 @@ app.post("/api/chats", ClerkExpressWithAuth(), async (req, res) => {
   }
 });
 
-app.get("/api/userchats", ClerkExpressWithAuth(), async (req, res) => {
-  const { userId } = req.auth;
+app.get(
+  "/api/userchats",
+  ClerkExpressWithAuth(),
+  withAuth(async (req, res) => {
+    console.log(req.auth);
+    const { userId } = req.auth;
+    console.log(userId);
 
-  try {
-    const userChats = await UserChats.find({ userId });
-    res.status(200).send(userChats[0]?.chats);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error fetching userchats!");
-  }
-});
+    try {
+      const userChats = await UserChats.find({ userId });
+      res.status(200).send(userChats[0]?.chats);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Error fetching userchats!");
+    }
+  })
+);
 
 app.get("/api/chats/:id", ClerkExpressWithAuth(), async (req, res) => {
   const { userId } = req.auth;

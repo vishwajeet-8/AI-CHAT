@@ -6,6 +6,7 @@ import ChatList from "../../components/chatList/ChatList";
 
 const DashboardLayout = () => {
   const { userId, isLoaded } = useAuth();
+  // console.log(userId);
   const navigate = useNavigate();
 
   useEffect(() => {

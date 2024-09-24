@@ -16,7 +16,7 @@ const ChatPage = () => {
     queryKey: ["chat", chatId],
     queryFn: async () =>
       fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
-        headers: { Authorization: `Bearer ${await getToken()}` },
+        Authorization: `Bearer ${await Clerk.session.getToken()}`,
         credentials: "include",
       }).then((res) => res.json()),
   });

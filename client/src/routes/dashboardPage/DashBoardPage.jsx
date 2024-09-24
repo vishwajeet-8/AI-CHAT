@@ -16,7 +16,7 @@ const DashboardPage = () => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await getToken()}`,
+          Authorization: `Bearer ${await Clerk.session.getToken()}`,
         },
         body: JSON.stringify({ text }),
       }).then((res) => res.json());

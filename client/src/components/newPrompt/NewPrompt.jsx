@@ -45,7 +45,7 @@ const NewPrompt = ({ data }) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await getToken()}`,
+          Authorization: `Bearer ${await Clerk.session.getToken()}`,
         },
         credentials: "include",
         body: JSON.stringify({

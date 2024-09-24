@@ -15,13 +15,22 @@ const ChatPage = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: async () => {
-      fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${await getToken()}`,
-        },
-        credentials: "include",
-      }).then((res) => res.json());
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/chats/${chatId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${await getToken()}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      return response.json();
     },
   });
 

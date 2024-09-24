@@ -11,12 +11,16 @@ const DashboardPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (text) => {
+      const token = await getToken();
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await Clerk.session.getToken()}`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
         body: JSON.stringify({ text }),
       }).then((res) => res.json());

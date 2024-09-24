@@ -41,11 +41,12 @@ const NewPrompt = ({ data }) => {
 
   const mutation = useMutation({
     mutationFn: async () => {
+      const token = await getToken();
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await Clerk.session.getToken()}`,
+          Authorization: `Bearer ${token}`,
         },
         credentials: "include",
         body: JSON.stringify({

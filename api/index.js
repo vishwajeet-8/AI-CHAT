@@ -103,6 +103,7 @@ app.get("/api/userchats", ClerkExpressWithAuth(), async (req, res) => {
 });
 
 app.get("/api/chats/:id", ClerkExpressWithAuth(), async (req, res) => {
+  console.log(req.auth);
   const { userId } = req.auth;
 
   try {
@@ -115,6 +116,7 @@ app.get("/api/chats/:id", ClerkExpressWithAuth(), async (req, res) => {
 });
 
 app.put("/api/chats/:id", ClerkExpressWithAuth(), async (req, res) => {
+  console.log(req.auth);
   const { userId } = req.auth;
   const { question, answer, img } = req.body;
 

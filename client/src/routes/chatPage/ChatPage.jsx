@@ -14,11 +14,16 @@ const ChatPage = () => {
 
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
-    queryFn: async () =>
+    queryFn: async () => {
+      const token = await getToken();
       fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
-        Authorization: `Bearer ${await Clerk.session.getToken()}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         credentials: "include",
-      }).then((res) => res.json()),
+      }).then((res) => res.json());
+    },
   });
 
   return (

@@ -5,10 +5,10 @@ import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini.js";
 import Markdown from "react-markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@clerk/clerk-react";
+// import { useAuth } from "@clerk/clerk-react";
 
 const NewPrompt = ({ data }) => {
-  const { getToken } = useAuth();
+  // const { getToken } = useAuth();
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [img, setImg] = useState({
@@ -41,12 +41,12 @@ const NewPrompt = ({ data }) => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const token = await getToken();
+      // const token = await getToken();
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${await Clerk.session.getToken()}`,
         },
         credentials: "include",
         body: JSON.stringify({

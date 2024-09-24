@@ -5,8 +5,10 @@ import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini.js";
 import Markdown from "react-markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@clerk/clerk-react";
 
 const NewPrompt = ({ data }) => {
+  const { getToken } = useAuth();
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [img, setImg] = useState({
@@ -38,13 +40,14 @@ const NewPrompt = ({ data }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
         method: "PUT",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${await getToken()}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           question: question.length ? question : undefined,
           answer,
@@ -118,15 +121,15 @@ const NewPrompt = ({ data }) => {
 
   // IN PRODUCTION WE DON'T NEED IT
 
-  const hasRun = useRef(false);
+  // const hasRun = useRef(false);
 
   useEffect(() => {
-    if (!hasRun.current) {
-      if (data?.history?.length === 1) {
-        add(data.history[0].parts[0].text, true);
-      }
+    // if (!hasRun.current) {
+    if (data?.history?.length === 1) {
+      add(data.history[0].parts[0].text, true);
+      // }
     }
-    hasRun.current = true;
+    // hasRun.current = true;
   }, []);
 
   return (

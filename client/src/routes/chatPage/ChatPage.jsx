@@ -4,16 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import Markdown from "react-markdown";
 import { IKImage } from "imagekitio-react";
+import { useAuth } from "@clerk/clerk-react";
 import React from "react";
 
 const ChatPage = () => {
+  const { getToken } = useAuth();
   const path = useLocation().pathname;
   const chatId = path.split("/").pop();
 
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
-    queryFn: () =>
+    queryFn: async () =>
       fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
         credentials: "include",
       }).then((res) => res.json()),
   });

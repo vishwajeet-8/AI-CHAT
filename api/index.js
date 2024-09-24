@@ -6,7 +6,6 @@ import cors from "cors";
 import Chat from "./model/chat.js";
 import UserChats from "./model/userChats.js";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
-// import { withAuth } from "@clerk/clerk-sdk-node";
 dotenv.config();
 
 const app = express();
@@ -41,6 +40,7 @@ app.get("/api/upload", function (req, res) {
 app.post("/api/chats", ClerkExpressWithAuth(), async (req, res) => {
   const { text } = req.body;
   const { userId } = req.auth;
+  console.log(req.auth);
 
   try {
     // CREATE A NEW CHAT
@@ -90,7 +90,6 @@ app.post("/api/chats", ClerkExpressWithAuth(), async (req, res) => {
 });
 
 app.get("/api/userchats", ClerkExpressWithAuth(), async (req, res) => {
-  console.log(req.auth);
   const { userId } = req.auth;
 
   try {

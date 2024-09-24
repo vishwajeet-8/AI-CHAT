@@ -6,7 +6,6 @@ import ChatList from "../../components/chatList/ChatList";
 
 const DashboardLayout = () => {
   const { userId, isLoaded } = useAuth();
-  // console.log(userId);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +19,7 @@ const DashboardLayout = () => {
   return (
     <div className="dashboardLayout">
       <div className="menu">
-        <ChatList userId={userId} />
+        <ChatList />
       </div>
       <div className="content">
         <Outlet />
